@@ -3,12 +3,7 @@
 History
 -------
 
-0.1.3 (2020-01-22)
+0.1.4 (2020-01-22)
 ++++++++++++++++++
 
-* First acceptable distribution.
-
-0.1.1 (2020-01-22)
-++++++++++++++++++
-
-* First release on PyPI.
+* First acceptable version.

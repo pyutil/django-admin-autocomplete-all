@@ -62,7 +62,6 @@ setup(
     keywords='django-admin-autocomplete-all',
     classifiers=[
         'Development Status :: 4 - Beta',
-        'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.2',
         'Framework :: Django :: 3.0',
         'Intended Audience :: Developers',
