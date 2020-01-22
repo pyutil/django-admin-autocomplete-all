@@ -28,7 +28,16 @@ Install django-admin-autocomplete-all::
 Features
 --------
 
-Django admin: Use select2 (autocomplete_fields) everywhere. Implicit is better than explicit. Because it is brief and easy.
+Django admin: Use select2 (autocomplete_fields) everywhere.
+
+In your admin.py import ModelAdmin, StackedInline and/or TabularInline from autocomplete_all instead of from admin.admin
+
+.. code-block:: python
+
+    import autocomplete_all
+    class MyModelAdmin(autocomplete_all.ModelAdmin):
+        ....
+
 
 Running Tests
 -------------
