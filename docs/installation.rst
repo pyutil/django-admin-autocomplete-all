@@ -9,5 +9,4 @@ For usage::
 For development, with virtualenvwrapper installed::
 
     $ git clone https://github.com/pyutil/django-admin-autocomplete-all.git
-    $ cd django-admin-autocomplete-all
-    $ mkvirtualenv django-admin-autocomplete-all -p python3 -r requirements.txt
+    $ mkvirtualenv django-admin-autocomplete-all -p python3 -a django-admin-autocomplete-all/ -r requirements.txt
