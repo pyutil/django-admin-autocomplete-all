@@ -14,8 +14,8 @@ In such class no other settings are required, but you can:
 
 .. code-block:: python
 
-    autocomplete_exclude = [<field1>, ..]    # disable adding autocomplete_fields for listed fields
-    autocomplete_all = False                 # disable automatic adding of autocomplete_fields at autocomplete_all
+    autocomplete_except = [<field1>, ..]    # disable adding autocomplete_fields for listed fields
+    autocomplete_all = False                # disable automatic adding of autocomplete_fields at all
 
 At the first start you will probably receive a lot of django errors/warnings.
 They mean that you don't have registered the related ModelAdmin classes or that such class lacks search_fields=..
