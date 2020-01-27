@@ -1,3 +1,5 @@
 wheel>=0.30.0
 twine>=3.1.1   # PyPI publishing
 sphinx>=2.3.1  # docs for readthedocs.org
+check-manifest
+
