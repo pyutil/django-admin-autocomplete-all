@@ -25,12 +25,18 @@ Install django-admin-autocomplete-all::
 
     pip install django-admin-autocomplete-all
 
+Add 'autocomplete_all' into INSTALLED_APPS.
+
 Features
 --------
 
-Django admin: Use select2 (autocomplete_fields) everywhere.
+1. You can add 'class Media: js=..' to get more context in get_search_results. You can also implement better server-side filtering in ajax calls include dynamic filters based on current value of other form fields.
+Read more in Usage or in source: autocomplete_all/js/autocomplete_params.js
 
-In your admin.py import ModelAdmin, StackedInline and/or TabularInline from autocomplete_all instead of from admin.admin
+
+2. Django admin: Use select2 (autocomplete_fields) everywhere.
+
+In your admin.py import ModelAdmin, StackedInline and/or TabularInline 'from autocomplete_all' instead of 'from admin'.
 
 .. code-block:: python
 

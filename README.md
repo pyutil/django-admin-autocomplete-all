@@ -1,5 +1,6 @@
 # django-admin-autocomplete-all
 Django admin: Use select2 (autocomplete_fields) everywhere. Implicit is better than explicit. Because it is brief and easy.
+In addition gives improved context in get_search_results so you can apply filters based on current <select> and form values.
 
 ## Install
 
@@ -7,9 +8,17 @@ Install the last stable release
 
     django-admin-autocomplete-all
 
-## Usage
+Add into INSTALLED_APPS:
 
-In your admin.py import ModelAdmin, StackedInline and/or TabularInline from autocomplete_all instead of from admin.admin
+    'autocomplete_all',
+
+## Usage (more context for server-side filters)
+
+Read in our Documentation (readthedocs) or in autocomplete_all/js/autocomplete_params.js.
+
+## Usage (add all foreign keys to autocomplete_fields)
+
+In your admin.py import ModelAdmin, StackedInline and/or TabularInline 'from autocomplete_all' instead of 'from admin'.
 
     import autocomplete_all
     class MyModelAdmin(autocomplete_all.ModelAdmin):
