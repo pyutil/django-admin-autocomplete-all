@@ -54,6 +54,7 @@ setup(
     packages=[
         'autocomplete_all',
     ],
+    package_data={'templates': ['*'], 'static': ['*'],},
     include_package_data=True,
     install_requires=[
     ],
