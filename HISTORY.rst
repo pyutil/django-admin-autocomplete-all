@@ -3,6 +3,11 @@
 History
 -------
 
+0.2.6 (2020-05-06)
+++++++++++++++++++
+
+* Fix: added class Media to fix some scenario(s) where widget is missing
+
 0.2.4 (2020-01-27)
 ++++++++++++++++++
 

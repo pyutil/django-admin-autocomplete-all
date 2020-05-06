@@ -34,7 +34,7 @@ Features
 
 .. code-block:: python
 
-    class MyModelAdmin(ModelAdmin):
+    class MyModelAdmin(ModelAdmin):   # ModelAdmin can be standard or autocomplete_all.ModelAdmin
         class Media:
             js = ('autocomplete_all/js/autocomplete_params.js',)
 
@@ -51,6 +51,9 @@ In your admin.py import ModelAdmin, StackedInline and/or TabularInline 'from aut
     import autocomplete_all
     class MyModelAdmin(autocomplete_all.ModelAdmin):
         ....
+
+You need implement lot of search_fields=.. settings in related ModelAdmins.
+You can try start (ie. runserver) without this and Django will show you what is required.
 
 
 Running Tests

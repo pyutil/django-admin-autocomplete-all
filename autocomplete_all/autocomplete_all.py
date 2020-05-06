@@ -1,7 +1,50 @@
+from django.conf import settings
 from django.contrib import admin
 
 
-class ModelAdmin(admin.ModelAdmin):
+if not settings.configured:
+    settings.configure()   # required for docs: make html
+
+
+# this mixin was added in 0.3 because it could fix problems with missing autocomplete widget in some scenario(s)
+class MediaMixin:
+    # here we use files distributed inside django 2+
+    class Media:
+        extra = '' if settings.DEBUG else '.min'
+        css = {
+            "screen": (
+                'admin/css/vendor/select2/select2%s.css' % extra,
+                'admin/css/autocomplete.css',
+            )
+        }
+        js = (
+            'admin/js/vendor/select2/select2.full%s.js' % extra,
+            'admin/js/autocomplete.js',
+        )
+
+    """
+    # this is setting for dal & dal_select2
+
+    class Media:
+        css = {
+            "all": (
+                'vendor/select2/dist/css/select2.css',
+                'autocomplete_light/select2.css',
+            )
+        }
+        js = (
+            # 'jquery/jquery-3.4.1.min.js',            # we believe jquery is loaded
+            'autocomplete_light/jquery.init.js',
+            'autocomplete_light/autocomplete.init.js',
+            'vendor/select2/dist/js/select2.full.js',
+            'autocomplete_light/select2.js',
+            'autocomplete_light/forward.js',
+            'autocomplete_light/jquery.post-setup.js',
+        )
+    """
+
+
+class ModelAdmin(admin.ModelAdmin, MediaMixin):
     """
     Edit form in Admin based on this class has all related fields with autocomplete/search/select2 support.
     (except of: has defined autocomplete_fields or is marked as autocomplete_all=False)
@@ -17,7 +60,7 @@ class ModelAdmin(admin.ModelAdmin):
         super().__init__(model, *args, **kwargs)
 
 
-class StackedInline(admin.StackedInline):
+class StackedInline(admin.StackedInline, MediaMixin):
     """
     Modification of StackedInline with autocomplete for all many_to_one and many_to_many fields.
     """
@@ -28,7 +71,7 @@ class StackedInline(admin.StackedInline):
         super().__init__(*args, **kwargs)
 
 
-class TabularInline(admin.TabularInline):
+class TabularInline(admin.TabularInline, MediaMixin):
     """
     Modification of TabularInline with autocomplete for all many_to_one and many_to_many fields.
     """
