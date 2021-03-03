@@ -11,7 +11,14 @@ django_admin_autocomplete_all
 .. image:: https://codecov.io/gh/pyutil/django-admin-autocomplete-all/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/pyutil/django-admin-autocomplete-all
 
-Django admin: 1) Get more context for filtering in get_search_results, 2) use select2 (autocomplete_fields) everywhere (because implicit is better than explicit).
+3 different things in Django Admin:
+
+1) Use select2 (autocomplete_fields) everywhere (because implicit is better than explicit).
+
+2) Get more context for filtering in get_search_results
+
+3) Hide danger delete/edit buttons near to the ForeignKey popups
+
 
 Documentation
 -------------
@@ -25,7 +32,7 @@ Install django-admin-autocomplete-all::
 
     pip install django-admin-autocomplete-all
 
-Add 'autocomplete_all' into INSTALLED_APPS, then collectstatic (both not required if you don't play with get_search_results filtering.)
+Add `autocomplete_all` into `INSTALLED_APPS`, then collectstatic (both not required if you don't want enhanced get_search_results filtering.)
 
 Features
 --------
