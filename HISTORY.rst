@@ -3,6 +3,12 @@
 History
 -------
 
+0.3.0 (2021-03-03)
+++++++++++++++++++
+
+* if used in INSTALLED_APPS before django.contrib.admin (or admin rewriting app), danger ForeignKey buttons (edit,delete) will disapear
+* import admin methods (example: .register): in many cases you can just `import autocomplete_all as admin` and no more changes in admin.py are needed
+
 0.2.6 (2020-05-06)
 ++++++++++++++++++
 

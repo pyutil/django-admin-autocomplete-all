@@ -30,7 +30,38 @@ Add 'autocomplete_all' into INSTALLED_APPS, then collectstatic (both not require
 Features
 --------
 
-(1) **Get more context in get_search_results.** Implement filtering into get_search_results of target ModelAdmin and add this to the source ModelAdmin:
+(1) **Use select2 (autocomplete_fields) everywhere.**
+
+No need to change INSTALLED_APPS to achieve this.
+In your admin.py do `import autocomplete_all as admin`.
+
+.. code-block:: python
+
+    import autocomplete_all as admin
+    class MyModelAdmin(admin.ModelAdmin):
+        ....
+
+Alternatively import ModelAdmin, StackedInline and/or TabularInline 'from autocomplete_all' instead of 'from admin'.
+
+.. code-block:: python
+
+    import autocomplete_all
+    class MyModelAdmin(autocomplete_all.ModelAdmin):
+        ....
+
+You will then need implement lot of search_fields=.. settings in related ModelAdmins.
+You can try start (ie. runserver) without adding `search_fields` and Django will show you what is required.
+
+
+(2) **Get more context in get_search_results.**
+
+Standard Django `autocomplete_fields` cannot inside `get_search_results` distinguish between the ForeignKey which asks for the queryset,
+especially if 2 ForeignKey's from single model target into same model (often example: ForeignKey into User model).
+If you add this package ('autocomplete_all') into INSTALLED_APPS, then ?key=... will be added into url.
+Inside `get_search_results` you will have access to: application, model, ForeignKey.
+See example in `static/autocomplete_all/js/autocomplete_params.js`.
+
+ Implement filtering into get_search_results of target ModelAdmin and add this to the source ModelAdmin:
 
 .. code-block:: python
 
@@ -39,21 +70,13 @@ Features
             js = ('autocomplete_all/js/autocomplete_params.js',)
 
 You can also implement dynamic filters based on current value of other form fields.
-See Usage for details or read in source code: autocomplete_all/js/autocomplete_params.js
+See Usage for details or read in source code: `autocomplete_all/js/autocomplete_params.js`
 
+(3) **Hide danger buttons in Admin ChangeForm.**
 
-(2) **Use select2 (autocomplete_fields) everywhere.**
-
-In your admin.py import ModelAdmin, StackedInline and/or TabularInline 'from autocomplete_all' instead of 'from admin'.
-
-.. code-block:: python
-
-    import autocomplete_all
-    class MyModelAdmin(autocomplete_all.ModelAdmin):
-        ....
-
-You need implement lot of search_fields=.. settings in related ModelAdmins.
-You can try start (ie. runserver) without this and Django will show you what is required.
+The edit & delete buttons near the ForeignKey have very difficult and danger logic what they will do.
+If you add `autocomplete_all` in `INSTALLED_APPS` before `django.contrib.admin` (or some application which replaces admin design, like django-baton),
+then the danger buttons will disapear. Place the `autocomplete_all` "lower" in list if you don't want this effect.
 
 
 Running Tests

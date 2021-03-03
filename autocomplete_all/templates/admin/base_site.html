@@ -1,0 +1,9 @@
+{% extends 'admin/base_site.html' %}
+{% block footer %}
+    {{ block.super }}
+    <script>
+        ($ || django.jQuery)(function() {
+            ($ || django.jQuery)('a.delete-related, a.change-related').hide();
+        });
+    </script>
+{% endblock footer %}
