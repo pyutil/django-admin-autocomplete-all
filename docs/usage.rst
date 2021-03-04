@@ -62,7 +62,7 @@ To avoid error messages while starting your Django project add:
 2. Get more context in get_search_results for better filtering.
 ---------------------------------------------------------------
 
-To achieve this, add `autocomplete_all` into INSTALLED_APPS. The Referer url will then contain ?key=...
+To achieve this, add `autocomplete_all` into INSTALLED_APPS. The Referer url will then contain `?key=...`
 
 If you want **2 dependent popups** (example: Country/City):
 
@@ -98,7 +98,7 @@ If you want **2 dependent popups** (example: Country/City):
 
 `autocomplete_params.js` is inside this package. `friends.js` you need to create (here inside `friends` application). Here is example.
 
-.. code-block:: js
+.. code-block:: guess
     function expand_ajax_params($, key) {
         return '&country=' + $('#id_country').val();
     }
@@ -113,35 +113,11 @@ Probably you cannot modify the native Django ajax url (../autocomplete/) and you
 Lets say, **you have inside single model 2 <select>s with same target model of ForeignKey** (example: User, in two different roles).
 In such case you cannot identify on the server-side (in get_search_results) which one <select> is active.
 This package will extend the Referer url to give more info to the server-side.
-Basically ?key=<fieldname> will be added to identify the <select>
-but you can add more (see later) and implement dynamic filters (dependent on current form values) too.
 
-EXAMPLE:
+Basically ?key=<fieldname> will be added to identify the <select>.
 
-source ModelAdmin:
-
-.. code-block:: python
-
-    class Media:
-        js = ('autocomplete_all/js/autocomplete_params.js',)
-
-target ModelAdmin:
-
-.. code-block:: python
-
-    def get_search_results(self, request, queryset, search_term):
-        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
-        if request.is_ajax and '/autocomplete/' in request.path:
-            url = urllib.parse.urlparse(request.headers['Referer'])
-            referer = url.path
-            qs = urllib.parse.parse_qs(url.query)
-            if '/npo/finding/' in referer:            # /<app>/<model>/
-                if qs.get('key') == ['id_process']:   # <field ~ foreignkey> (parse_qs results are lists)
-                    queryset = queryset.filter(...)
-        return queryset, use_distinct
-
-If you need dynamic filter based on current value of other field in your admin form then you can add second (yours) ModelAdmin Media js file and rewrite in it the function expand_ajax_params.
-You will find complete example in sources: at bottom of autocomplete_all/js/autocomplete_params.js
+For dynamic filters (dependent on current value of other field in your admin form) you should add second (yours) ModelAdmin Media js file and rewrite inside it the function expand_ajax_params.
+Read more above. You will find more in sources: `autocomplete_all/js/autocomplete_params.js`, `autocomplete_all.py: ModelAdmin.get_search_results_ajax`
 
 
 3. Hide danger buttons in Admin ChangeForm.
