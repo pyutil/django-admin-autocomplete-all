@@ -11,6 +11,7 @@ This package has 3 independent functions:
 3. Hide danger delete/edit buttons near the ForeignKey popup (`INSTALLED_APPS`: place `autocomplete_all` before `django.contrib.admin`)
 
 
+.. contents:: Contents
 --------------
 
 1. Add autocomplete_fields for all foreign keys.
@@ -63,7 +64,7 @@ To avoid error messages while starting your Django project add:
 
 To achieve this, add `autocomplete_all` into INSTALLED_APPS. The Referer url will then contain ?key=...
 
-If you want *2 dependent popups* (example: Country/City):
+If you want **2 dependent popups** (example: Country/City):
 
 .. code-block:: python
     # from django.contrib import admin
@@ -95,9 +96,9 @@ If you want *2 dependent popups* (example: Country/City):
         class Media:
             js = ('autocomplete_all/js/autocomplete_params.js', 'friends/js/friend.js')   # Source admin
 
-`autocomplete_params.js` is inside this package, `friends.js` you need to create (here in `friends` application). Example:
+`autocomplete_params.js` is inside this package. `friends.js` you need to create (here inside `friends` application). Here is example.
 
-.. code-block:: javascript
+.. code-block:: js
     function expand_ajax_params($, key) {
         return '&country=' + $('#id_country').val();
     }
@@ -106,10 +107,10 @@ Previous will give required data for your `.get_search_results_ajax()` method (o
 That way you can control queryset filtering based on: 1) application, 2) model (where in change_form the popup is), 3) the ForeignKey of the popup.
 
 
-Especially this is *workaround for stupid behaviour of autocomplete_fields* in Django (2,3).
+Especially this is **workaround for stupid behaviour of autocomplete_fields** in Django (2,3).
 Probably you cannot modify the native Django ajax url (../autocomplete/) and you can only access the Referer url during get_search_results.
 
-Lets say, *you have inside single model 2 <select>s with same target model of ForeignKey* (example: User, in two different roles).
+Lets say, **you have inside single model 2 <select>s with same target model of ForeignKey** (example: User, in two different roles).
 In such case you cannot identify on the server-side (in get_search_results) which one <select> is active.
 This package will extend the Referer url to give more info to the server-side.
 Basically ?key=<fieldname> will be added to identify the <select>
@@ -147,5 +148,5 @@ You will find complete example in sources: at bottom of autocomplete_all/js/auto
 -------------------------------------------
 
 The edit & delete buttons near the ForeignKey have very difficult and danger logic what they will do.
-If you add `autocomplete_all` in `INSTALLED_APPS` before `django.contrib.admin` (or some application which replaces admin design, like django-baton),
-then the danger buttons will disapear. Place the `autocomplete_all` "lower" in list if you don't want this effect.
+If you add `autocomplete_all` in `INSTALLED_APPS` before `django.contrib.admin` (or some application which replaces admin design, like `django-baton`),
+then the danger buttons will disapear. Place the `autocomplete_all` "lower" in `INSTALLED_APPS` if you don't want this effect.
