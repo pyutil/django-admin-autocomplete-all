@@ -15,7 +15,7 @@ django_admin_autocomplete_all
 
 1) Use select2 (autocomplete_fields) everywhere (because implicit is better than explicit).
 
-2) Get more context for filtering in get_search_results
+2) Get more context for filtering in get_search_results; allows relative easy filtering of popup options
 
 3) Hide danger delete/edit buttons near to the ForeignKey popups
 
@@ -77,7 +77,7 @@ See example in `static/autocomplete_all/js/autocomplete_params.js`.
             js = ('autocomplete_all/js/autocomplete_params.js',)
 
 You can also implement dynamic filters based on current value of other form fields.
-See Usage for details or read in source code: `autocomplete_all/js/autocomplete_params.js`
+See Usage for details or read in source code: `autocomplete_all/js/autocomplete_params.js` and `autocomplete_all.py: ModelAdmin,get_search_results_ajax`.
 
 (3) **Hide danger buttons in Admin ChangeForm.**
 

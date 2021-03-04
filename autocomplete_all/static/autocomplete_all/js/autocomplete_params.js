@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!window.history.orig_pathname) {
                 window.history.orig_pathname = window.location.pathname;
             }
-            this.modified_location_search_key = '?key=' + this.id + expand_ajax_location_search();
-            this.modified_location_search = this.modified_location_search_key + expand_ajax_location_search($, this.id);
+            this.modified_location_search_key = '?key=' + this.id;
+            this.modified_location_search = this.modified_location_search_key + expand_ajax_params($, this.id);
             window.history.replaceState(null, null, window.history.orig_pathname + this.modified_location_search);
         });
         $('select.admin-autocomplete').on('select2:closing', function (evt) {
@@ -46,11 +46,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /*
 If you need dynamic filter based on some current value of other field in your admin form then:
-You can add second (yours) ModelAdmin Media js file and there rewrite the function expand_ajax_location_search.
+You can add second (yours) ModelAdmin Media js file and there rewrite the function expand_ajax_params.
 Example:
 In ModelAdmin, class Media: js = ('autocomplete_all/js/autocomplete_params.js', <myapp>/js/autocomplete_asset.js)
 In autocomplete_asset.js:
-function expand_ajax_location_search($, key) {
+function expand_ajax_params($, key) {
     if (key === 'id_asset') {          // we need dynamic filtering with 'asset' foreignkey only
         return '&city=' + $('#id_city').val() + &country=' + $('#id_country').val();   // ie. give only assets from London+UK
     } else {
@@ -60,6 +60,9 @@ function expand_ajax_location_search($, key) {
 (Or you could make it easier and give parameters always regardless on the current <select>:
     just remove the if/else and use the 1st return only.)
 */
-function expand_ajax_location_search($, fieldId) {
+
+// the default function adds nothing to params (except of ?key=..)
+//  but you can rewrite this function in particular js file (entered as 2nd one in Source admin, class Media, js=(.., ..))
+function expand_ajax_params($, fieldId) {
     return ''
 }

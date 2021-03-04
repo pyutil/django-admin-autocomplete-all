@@ -3,6 +3,12 @@
 History
 -------
 
+0.4.0 (2021-03-04)
+expand_ajax_location_search func renamed to expand_ajax_params (incompatible change: please rename the function if you have it in your javascript)
+wrapper for queryset filtering moved from example (ie. from commented code) to real code; new method .get_search_results_ajax() in ModelAdmin
+new documentation in usage.rst
+++++++++++++++++++
+
 0.3.0 (2021-03-03)
 ++++++++++++++++++
 

@@ -1,5 +1,8 @@
+import urllib
+
 from django.conf import settings
 from django.contrib import admin
+from django.urls import reverse
 
 
 if not settings.configured:
@@ -58,6 +61,35 @@ class ModelAdmin(admin.ModelAdmin, MediaMixin):
     def __init__(self, model, *args, **kwargs):
         _modify_class(self, model)
         super().__init__(model, *args, **kwargs)
+
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        if request.is_ajax and '/autocomplete/' in request.path:
+            strip_begin = reverse('admin:index')
+            url = urllib.parse.urlparse(request.headers['Referer'])
+            referer = url.path                    # example: /admin/friends/friend/add, /admin/friends/friend/36/change
+            referer = referer[len(strip_begin):]  # example: friends/friend/add, friends/friend/36/change
+            urlparams = urllib.parse.parse_qs(url.query)  # example: {'key': ['id_city'], 'country': '1'}  # the 2nd one from customized function expand_ajax_params
+            key = urlparams.get('key')            # example: ['id_city']
+            if type(key) in (list, tuple):
+                key = key[0]
+            queryset = self.get_search_results_ajax(queryset, referer, key, urlparams)   # filtering of queryset if it is dependent
+        return queryset, use_distinct
+
+    def get_search_results_ajax(self, queryset, referer, key, urlparams):
+        return queryset
+        # customization example - in inherited ModelAdmin class:
+        # if referer.startswith('friends/friend/'):   # <app>/<model>/  # model of the Source admin (which has popup),
+        #                                                               # not of this one (Target) admin who owns get_search_results_ajax method
+        #     if key == 'id_city':                    # <field ~ foreignkey>
+        #         queryset = queryset.filter(country=urlparams['country'][0])
+        # return queryset
+        #
+        # # in addition you need in Source admin class Media, something like:
+        #     class Media:
+        #         js = ('autocomplete_all/js/autocomplete_params.js', 'friends/js/friend.js')
+        # # and the 2nd .js must rewrite the function which expands url parameters:
+        #     function expand_ajax_params($, key) {return '&country=' + $('#id_country').val();}
 
 
 class StackedInline(admin.StackedInline, MediaMixin):

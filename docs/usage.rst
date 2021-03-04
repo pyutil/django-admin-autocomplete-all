@@ -63,7 +63,48 @@ To avoid error messages while starting your Django project add:
 
 To achieve this, add `autocomplete_all` into INSTALLED_APPS. The Referer url will then contain ?key=...
 
-This is workaround for stupid behaviour of autocomplete_fields in Django (2,3).
+If you want 2 dependent popups (example: Country/City):
+```
+# from django.contrib import admin
+import autocomplete_all as admin
+
+from .models import City, Country, Friend
+
+
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+
+
+@admin.register(City)                                                                # Target admin (searches for popup options)
+class CityAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+
+    def get_search_results_ajax(self, queryset, referer, key, urlparams):
+        if referer.startswith('friends/friend/'):   # <app>/<model>/  # model of the Source admin (which has popup)
+            if key == 'id_city':                    # <field ~ foreignkey>
+                queryset = queryset.filter(country=urlparams['country'][0])
+        return queryset
+
+
+@admin.register(Friend)
+class FriendAdmin(admin.ModelAdmin):
+    search_fields = ('nick',)
+
+    class Media:
+        js = ('autocomplete_all/js/autocomplete_params.js', 'friends/js/friend.js')   # Source admin
+```
+`autocomplete_params.js` is inside this package, `friends.js` you need to create (here in `friends` application). Example:
+```
+function expand_ajax_params($, key) {
+    return '&country=' + $('#id_country').val();
+}
+```
+Previous will give required data for your `.get_search_results_ajax()` method (of the relational targeted ModelAdmin).
+That way you can control queryset filtering based on: 1) application, 2) model (where in change_form the popup is), 3) the ForeignKey of the popup.
+
+
+Especially this is workaround for stupid behaviour of autocomplete_fields in Django (2,3).
 Probably you cannot modify the native Django ajax url (../autocomplete/) and you can only access the Referer url during get_search_results.
 
 Lets say, you have 2 <select>s with same ForeignKey (example: User, in two different roles).
@@ -96,7 +137,7 @@ target ModelAdmin:
                     queryset = queryset.filter(...)
         return queryset, use_distinct
 
-If you need dynamic filter based on current value of other field in your admin form then you can add second (yours) ModelAdmin Media js file and rewrite in it the function expand_ajax_location_search.
+If you need dynamic filter based on current value of other field in your admin form then you can add second (yours) ModelAdmin Media js file and rewrite in it the function expand_ajax_params.
 You will find complete example in sources: at bottom of autocomplete_all/js/autocomplete_params.js
 
 
