@@ -92,6 +92,10 @@ class ModelAdmin(admin.ModelAdmin, MediaMixin):
         #     function expand_ajax_params($, key) {return '&country=' + $('#id_country').val();}
 
 
+class HiddenAdmin(ModelAdmin):
+    has_module_permission = lambda self, req: False
+
+
 class StackedInline(admin.StackedInline, MediaMixin):
     """
     Modification of StackedInline with autocomplete for all many_to_one and many_to_many fields.

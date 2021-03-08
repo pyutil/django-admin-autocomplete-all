@@ -18,4 +18,4 @@ from django.contrib.admin import (AdminSite, AllValuesFieldListFilter, BooleanFi
             options, register, site, sites, templatetags, utils, views, widgets)
             # skipped: default_app_config, models (because with them it is impossible to add `autocomplete_all` into INSTALLED_APPS)
             # skipped ModelAdmin, StackedInline, TabularInline
-from .autocomplete_all import ModelAdmin, StackedInline, TabularInline
+from .autocomplete_all import HiddenAdmin, ModelAdmin, StackedInline, TabularInline
