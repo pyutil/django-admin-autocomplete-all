@@ -66,7 +66,7 @@ Standard Django `autocomplete_fields` cannot inside `get_search_results` disting
 especially if 2 ForeignKey's from single model target into same model (often example: ForeignKey into User model).
 If you add this package ('autocomplete_all') into INSTALLED_APPS, then ?key=... will be added into url.
 Inside `get_search_results` you will have access to: application, model, ForeignKey.
-See example in `static/autocomplete_all/js/autocomplete_params.js`.
+See example in `static/autocomplete_all/js/autocomplete_all.js`.
 
  Implement filtering into get_search_results of target ModelAdmin and add this to the source ModelAdmin:
 
@@ -74,10 +74,10 @@ See example in `static/autocomplete_all/js/autocomplete_params.js`.
 
     class MyModelAdmin(ModelAdmin):   # ModelAdmin can be standard or autocomplete_all.ModelAdmin
         class Media:
-            js = ('autocomplete_all/js/autocomplete_params.js',)
+            js = ('autocomplete_all/js/autocomplete_all.js',)
 
 You can also implement dynamic filters based on current value of other form fields.
-See Usage for details or read in source code: `autocomplete_all/js/autocomplete_params.js` and `autocomplete_all.py: ModelAdmin,get_search_results_ajax`.
+See Usage for details or read in source code: `autocomplete_all/js/autocomplete_all.js` and `autocomplete_all.py: ModelAdmin,get_search_results_ajax`.
 
 (3) **Hide danger buttons in Admin ChangeForm.**
 

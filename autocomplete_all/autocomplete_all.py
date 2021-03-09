@@ -23,6 +23,7 @@ class MediaMixin:
         js = (
             'admin/js/vendor/select2/select2.full%s.js' % extra,
             'admin/js/autocomplete.js',
+            'autocomplete_all/js/autocomplete_all.js',
         )
 
     """
@@ -87,7 +88,7 @@ class ModelAdmin(admin.ModelAdmin, MediaMixin):
         #
         # # in addition you need in Source admin class Media, something like:
         #     class Media:
-        #         js = ('autocomplete_all/js/autocomplete_params.js', 'friends/js/friend.js')
+        #         js = ('autocomplete_all/js/autocomplete_all.js', 'friends/js/friend.js')
         # # and the 2nd .js must rewrite the function which expands url parameters:
         #     function expand_ajax_params($, key) {return '&country=' + $('#id_country').val();}
 

@@ -3,12 +3,18 @@
 History
 -------
 
+0.6.0 (2021-03-10)
+INCOMPATIBLE: autocomplete_params.js renamend to autocomplete_all.js (please rename if you have this in your code)
+autocomplete_all.js is now always attached in MediaMixin (for ModelAdmin and both Inlines)
+ajax autocomplete call now contains all values from the form (see the urlparams variable): you can easier make filtered popups
+++++++++++++++++++
+
 0.5.0 (2021-03-05)
 HiddenAdmin: allow make related admins for search_fields=.. but hide them for direct access (example: we have them better accessible as Inlines)
 ++++++++++++++++++
 
 0.4.0 (2021-03-04)
-expand_ajax_location_search func renamed to expand_ajax_params (incompatible change: please rename the function if you have it in your javascript)
+INCOMPATIBLE: expand_ajax_location_search func renamed to expand_ajax_params (please rename the function if you have it in your javascript)
 wrapper for queryset filtering moved from example (ie. from commented code) to real code; new method .get_search_results_ajax() in ModelAdmin
 new documentation in usage.rst
 ++++++++++++++++++

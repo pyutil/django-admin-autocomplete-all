@@ -14,7 +14,7 @@ Add into INSTALLED_APPS:
 
 ## Usage (more context for server-side filters)
 
-Read in our Documentation (readthedocs) or in autocomplete_all/js/autocomplete_params.js.
+Read in our Documentation (readthedocs) or in autocomplete_all/js/autocomplete_all.js.
 
 ## Usage (add all foreign keys to autocomplete_fields)
 

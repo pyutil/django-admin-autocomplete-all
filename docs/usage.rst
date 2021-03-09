@@ -84,30 +84,41 @@ If you want **2 dependent popups** (example: Country/City):
         search_fields = ('name',)
         
         def get_search_results_ajax(self, queryset, referer, key, urlparams):
-            if referer.startswith('friends/friend/'):   # <app>/<model>/  # model of the Source admin (which has popup)
+            if referer.startswith('friends/friend/'):   # <app>/<model>/  # model of the Source (which has popup) Admin (not of the Inline)
+
+                # example for the plain popup
                 if key == 'id_city':                    # <field ~ foreignkey>
                     queryset = queryset.filter(country=urlparams['country'][0])
+
+                # example for the popup inside the Inline (which lists more locations)
+                if key.startswith(before := 'id_location_set-') and key.endswith(after := '-city'):
+                    idx = key[len(before):-len(after)]
+                    queryset = queryset.filter(country=urlparams[f'location_set-{idx}-country'][0])
+
             return queryset
-    
+
     
     @admin.register(Friend)
-    class FriendAdmin(admin.ModelAdmin):
+    class FriendAdmin(admin.ModelAdmin):   # if you don't need ModelAdmin you can use HiddenAdmin instead
         search_fields = ('nick',)
-        
-        class Media:
-            js = ('autocomplete_all/js/autocomplete_params.js', 'friends/js/friend.js')   # Source admin
 
-    # `autocomplete_params.js` is inside this package. `friends.js` you need to create (here inside `friends` application). Here is example.
-    #
-    #    function expand_ajax_params($, key) {
-    #        return '&country=' + $('#id_country').val();
-    #    }
+        # no more needed here; autocomplete_all.js is automatically added and gives all forms values in the urlparams variable
+
+        # but alternatively you can limit the form values transferred by the ajax request:
+        # class Media:
+        #     js = ('autocomplete_all/js/autocomplete_all.js', 'friends/js/friend.js')   # Source admin
+
+        # `friends.js` you need to create inside the `friends` application. Here is example:
+        #
+        #    function expand_ajax_params($, key) {
+        #        return '&country=' + $('#id_country').val();
+        #    }
 
 Previous will give required data for your `.get_search_results_ajax()` method (of the relational targeted ModelAdmin).
 That way you can control queryset filtering based on: 1) application, 2) model (where in change_form the popup is), 3) the ForeignKey of the popup.
 
 
-Especially this is **workaround for stupid behaviour of autocomplete_fields** in Django (2,3).
+Especially previous is **workaround for stupid behaviour of autocomplete_fields** in Django (2,3).
 Probably you cannot modify the native Django ajax url (../autocomplete/) and you can only access the Referer url during get_search_results.
 
 Lets say, **you have inside single model 2 <select>s with same target model of ForeignKey** (example: User, in two different roles).
@@ -117,7 +128,7 @@ This package will extend the Referer url to give more info to the server-side.
 Basically ?key=<fieldname> will be added to identify the <select>.
 
 For dynamic filters (dependent on current value of other field in your admin form) you should add second (yours) ModelAdmin Media js file and rewrite inside it the function expand_ajax_params.
-Read more above. You will find more in sources: `autocomplete_all/js/autocomplete_params.js`, `autocomplete_all.py: ModelAdmin.get_search_results_ajax`
+Read more above. You will find more in sources: `autocomplete_all/js/autocomplete_all.js`, `autocomplete_all.py: ModelAdmin.get_search_results_ajax`
 
 
 3. Hide danger buttons in Admin ChangeForm.

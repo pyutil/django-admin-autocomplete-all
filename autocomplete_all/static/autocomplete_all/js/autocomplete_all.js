@@ -11,7 +11,7 @@ Basically ?key=<fieldname> will be added to identify the <select>
 EXAMPLE:
 source ModelAdmin:
     class Media:
-        js = ('autocomplete_all/js/autocomplete_params.js',)
+        js = ('autocomplete_all/js/autocomplete_all.js',)
 target ModelAdmin:
     def get_search_results(self, request, queryset, search_term):
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
@@ -41,14 +41,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.history.replaceState(null, null, window.history.orig_pathname);
             }
         });
-    })(django.jQuery);
+    })(django.jQuery || $);
 });
 
 /*
 If you need dynamic filter based on some current value of other field in your admin form then:
 You can add second (yours) ModelAdmin Media js file and there rewrite the function expand_ajax_params.
 Example:
-In ModelAdmin, class Media: js = ('autocomplete_all/js/autocomplete_params.js', <myapp>/js/autocomplete_asset.js)
+In ModelAdmin, class Media: js = ('autocomplete_all/js/autocomplete_all.js', <myapp>/js/autocomplete_asset.js)
 In autocomplete_asset.js:
 function expand_ajax_params($, key) {
     if (key === 'id_asset') {          // we need dynamic filtering with 'asset' foreignkey only
@@ -64,5 +64,30 @@ function expand_ajax_params($, key) {
 // the default function adds nothing to params (except of ?key=..)
 //  but you can rewrite this function in particular js file (entered as 2nd one in Source admin, class Media, js=(.., ..))
 function expand_ajax_params($, fieldId) {
-    return ''
+    function sanitize(string) {  // https://stackoverflow.com/questions/2794137/sanitizing-user-input-before-adding-it-to-the-dom-in-javascript
+        if (string === null) {return '';}
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#x27;',
+            "/": '&#x2F;',
+        };
+        const reg = /[&<>"'/]/ig;
+        return string.replace(reg, (match)=>(map[match]));
+    }
+    let controls = $('input, select');
+    let textareas = $('textarea');
+    let expanded = '';
+    for (let i = 0; i < controls.length; i++) {
+        expanded += '&' + controls[i].name + '=' + sanitize($(controls[i]).val());
+    }
+    for (let i = 0; i < textareas.length; i++) {
+        let content = $(textareas[i]).val();
+        expanded += '&' + textareas[i].name + '=' + content.length;   // for textareas ie. can be tested ==='0', !=='0'
+        if (content.length <= 40) {expanded += ':' + sanitize(content);}      // the short content is also accessible
+    }
+    return expanded;
+    // return '&country=' + $('#id_country').val();
 }
