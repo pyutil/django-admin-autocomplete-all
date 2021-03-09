@@ -59,10 +59,11 @@ To avoid error messages while starting your Django project add:
     admin.site.register(User, UserAdmin)
 
 
-2. Get more context in get_search_results for better filtering.
----------------------------------------------------------------
+2. Get more context in get_search_results for additional dynamic filtering.
+---------------------------------------------------------------------------
 
-To achieve this, add `autocomplete_all` into INSTALLED_APPS. The Referer url will then contain `?key=...`
+To achieve this, add `autocomplete_all` into INSTALLED_APPS. The Referer url will then contain `?key=...` and all form values.
+You can add .get_search_results_ajax() method in the Admin which defines search_fields and you will have access to the values from the form (in key & urlparams variables).
 
 If you want **2 dependent popups** (example: Country/City):
 
