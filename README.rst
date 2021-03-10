@@ -37,7 +37,7 @@ Add `autocomplete_all` into `INSTALLED_APPS`, then collectstatic (both not requi
 Features
 --------
 
-(1) **Use select2 (autocomplete_fields) everywhere.**
+(1) **Add autocomplete_fields for all foreign keys.**
 
 No need to change INSTALLED_APPS to achieve this.
 In your admin.py do `import autocomplete_all as admin`.
@@ -60,7 +60,7 @@ You will then need implement lot of search_fields=.. settings in related ModelAd
 You can try start (ie. runserver) without adding `search_fields` and Django will show you what is required.
 
 
-(2) **Get more context in get_search_results.**
+(2) **Get more context in get_search_results for additional dynamic filtering.**
 
 Standard Django `autocomplete_fields` cannot inside `get_search_results` distinguish between the ForeignKey which asks for the queryset,
 especially if 2 ForeignKey's from single model target into same model (often example: ForeignKey into User model).
@@ -68,13 +68,8 @@ If you add this package ('autocomplete_all') into INSTALLED_APPS, then ?key=... 
 Inside `get_search_results` you will have access to: application, model, ForeignKey.
 See example in `static/autocomplete_all/js/autocomplete_all.js`.
 
- Implement filtering into get_search_results of target ModelAdmin and add this to the source ModelAdmin:
-
-.. code-block:: python
-
-    class MyModelAdmin(ModelAdmin):   # ModelAdmin can be standard or autocomplete_all.ModelAdmin
-        class Media:
-            js = ('autocomplete_all/js/autocomplete_all.js',)
+You need implement filtering into get_search_results of target ModelAdmin (you can use HiddenAdmin class instead).
+Instead of get_search_results you can use get_search_results_ajax which run for the autocomplete/ access only.
 
 You can also implement dynamic filters based on current value of other form fields.
 See Usage for details or read in source code: `autocomplete_all/js/autocomplete_all.js` and `autocomplete_all.py: ModelAdmin,get_search_results_ajax`.

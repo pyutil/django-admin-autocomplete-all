@@ -15,7 +15,7 @@ This package has 3 independent functions:
 --------------
 
 1. Add autocomplete_fields for all foreign keys.
----------------------------------------------
+------------------------------------------------
 
 To achieve this, in your `admin.py` do: `import autocomplete_all as admin`.
 
