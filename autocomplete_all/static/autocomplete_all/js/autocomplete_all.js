@@ -1,5 +1,5 @@
 /*
-This is workaround for stupid behaviour of autocomplete_fields in Django (2,3).
+This is workaround for pure behaviour of autocomplete_fields in Django (2,3).
 Probably you cannot modify the native Django ajax url (../autocomplete/) and you can only access the Referer url.
 
 Lets say, you have 2 <select>s with same ForeignKey (example: User).
@@ -9,9 +9,7 @@ Basically ?key=<fieldname> will be added to identify the <select>
     but you can add more (see bellow) and implement dynamic filters (dependent on current form values) too.
 
 EXAMPLE:
-source ModelAdmin:
-    class Media:
-        js = ('autocomplete_all/js/autocomplete_all.js',)
+this is automatically called: source ModelAdmin, class Media, js = ('autocomplete_all/js/autocomplete_all.js',)
 target ModelAdmin:
     def get_search_results(self, request, queryset, search_term):
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
@@ -24,6 +22,18 @@ target ModelAdmin:
                     queryset = queryset.filter(...)
         return queryset, use_distinct
 */
+
+/* I leave this, not able make the fake Admin working outside of Admin */
+// /* Django native admin/js/autocomplete.js depends on presence of django.jQuery.
+//    Outside of Admin, if this .js is called before autocomplete.js, following will make possible autocomplete.js to work.
+//    This is skipped inside Admin where django.jQuery exists.
+// */
+// if (typeof(django) === "undefined") {
+//     django = {};
+// }
+// if (typeof(django.jQuery) === "undefined") {
+//     django.jQuery = $;
+// }
 
 document.addEventListener("DOMContentLoaded", function () {
     (function ($) {

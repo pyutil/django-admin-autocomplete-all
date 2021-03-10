@@ -58,6 +58,15 @@ To avoid error messages while starting your Django project add:
     from django.contrib.auth.admin import UserAdmin  # must define search_fields=.. (which is true in this case)
     admin.site.register(User, UserAdmin)
 
+Recap - Steps to implement:
+
+1. For the popup (for the ForeignKey) we need the Target Admin - ModelAdmin of the model, where the ForeignKey links
+
+2. If Target Admin doesn't exist and we don't want them, we will replace it using HiddenAdmin (from django-admin-autocomplete-all)
+
+3. In the Target Admin we need define search_fields=..
+
+
 
 2. Get more context in get_search_results for additional dynamic filtering.
 ---------------------------------------------------------------------------
@@ -130,6 +139,14 @@ This could be hard to do. The alternative approach can be raise at least the Val
         if self.city is not None and self.city.country != self.country:
             raise ValidationError(_("Friend model: City doesn't correspond with the selected Country."))
 
+Recap - Steps to implement:
+
+1 - 2 - 3. same as above
+
+4. autocomplete_all in INSTALLED_APPS, collectstatic.
+
+5. In Target Admin we add additional filtering with help of the .get_search_results_ajax(self, queryset, referer, key, urlparams) method.
+
 
 The functionality (giving more context for .get_search_results()) is especially **workaround for pure behaviour of autocomplete_fields** in Django (2,3).
 Probably you cannot modify the native Django ajax url (../autocomplete/) and you can only access the Referer url during get_search_results.
@@ -139,9 +156,6 @@ In such case you cannot identify on the server-side (in get_search_results) whic
 This package will extend the Referer url to give more info to the server-side.
 
 Basically ?key=<fieldname> will be added to identify the <select>.
-
-For dynamic filters (dependent on current value of other field in your admin form) you should add second (yours) ModelAdmin Media js file and rewrite inside it the function expand_ajax_params.
-Read more above. You will find more in sources: `autocomplete_all/js/autocomplete_all.js`, `autocomplete_all.py: ModelAdmin.get_search_results_ajax`
 
 
 3. Hide danger buttons in Admin ChangeForm.

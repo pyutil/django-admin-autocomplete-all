@@ -3,13 +3,13 @@
 History
 -------
 
-0.6.1 (2021-03-10)
+0.6.2 (2021-03-10)
 ++++++++++++++++++
-docs only (dependent popups)
+INCOMPATIBLE: MediaMixin renamed to AutocompleteAllMixin (please rename if you have this class in your code)
 
 0.6.0 (2021-03-09)
 INCOMPATIBLE: autocomplete_params.js renamend to autocomplete_all.js (please rename if you have this in your code)
-autocomplete_all.js is now always attached in MediaMixin (for ModelAdmin and both Inlines)
+autocomplete_all.js is now always attached in MediaMixin [later: AutocompleteAllMixin] (for ModelAdmin and both Inlines)
 ajax autocomplete call now contains all values from the form (see the urlparams variable): you can easier make filtered popups
 ++++++++++++++++++
 

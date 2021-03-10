@@ -10,21 +10,21 @@ if not settings.configured:
 
 
 # this mixin was added in 0.3 because it could fix problems with missing autocomplete widget in some scenario(s)
-class MediaMixin:
+class AutocompleteAllMixin:
     # here we use files distributed inside django 2+
     class Media:
         extra = '' if settings.DEBUG else '.min'
         css = {
-            "screen": (
+            "screen": [
                 'admin/css/vendor/select2/select2%s.css' % extra,
                 'admin/css/autocomplete.css',
-            )
+            ]
         }
-        js = (
+        js = [
             'admin/js/vendor/select2/select2.full%s.js' % extra,
             'admin/js/autocomplete.js',
             'autocomplete_all/js/autocomplete_all.js',
-        )
+        ]
 
     """
     # this is setting for dal & dal_select2
@@ -48,7 +48,7 @@ class MediaMixin:
     """
 
 
-class ModelAdmin(admin.ModelAdmin, MediaMixin):
+class ModelAdmin(admin.ModelAdmin, AutocompleteAllMixin):
     """
     Edit form in Admin based on this class has all related fields with autocomplete/search/select2 support.
     (except of: has defined autocomplete_fields or is marked as autocomplete_all=False)
@@ -97,7 +97,7 @@ class HiddenAdmin(ModelAdmin):
     has_module_permission = lambda self, req: False
 
 
-class StackedInline(admin.StackedInline, MediaMixin):
+class StackedInline(admin.StackedInline, AutocompleteAllMixin):
     """
     Modification of StackedInline with autocomplete for all many_to_one and many_to_many fields.
     """
@@ -108,7 +108,7 @@ class StackedInline(admin.StackedInline, MediaMixin):
         super().__init__(*args, **kwargs)
 
 
-class TabularInline(admin.TabularInline, MediaMixin):
+class TabularInline(admin.TabularInline, AutocompleteAllMixin):
     """
     Modification of TabularInline with autocomplete for all many_to_one and many_to_many fields.
     """
