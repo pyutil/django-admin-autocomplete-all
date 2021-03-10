@@ -3,7 +3,7 @@
 History
 -------
 
-0.6.2 (2021-03-10)
+0.6.3 (2021-03-10)
 ++++++++++++++++++
 INCOMPATIBLE: MediaMixin renamed to AutocompleteAllMixin (please rename if you have this class in your code)
 
