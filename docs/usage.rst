@@ -118,8 +118,20 @@ If you want **2 dependent popups** (example: Country/City):
 Previous will give required data for your `.get_search_results_ajax()` method (of the relational targeted ModelAdmin).
 That way you can control queryset filtering based on: 1) application, 2) model (where in change_form the popup is), 3) the ForeignKey of the popup.
 
+Warning: At this time we don't support the constraint between the source condition and dependent ForeignKey full.
+If user has set the Foreignkey for some condition and he/she changes the condition later, the old (inconsistent) value can remain.
+It is up on to you to clear the popup together with the change of the filtering condition.
+This could be hard to do. The alternative approach can be raise at least the ValidationError with help of similar definition in your model:
 
-Especially previous is **workaround for stupid behaviour of autocomplete_fields** in Django (2,3).
+.. code-block:: python
+
+    # https://stackoverflow.com/questions/2281179/adding-extra-constraints-into-fields-in-django
+    def clean(self):
+        if self.city is not None and self.city.country != self.country:
+            raise ValidationError(_("Friend model: City doesn't correspond with the selected Country."))
+
+
+The functionality (giving more context for .get_search_results()) is especially **workaround for pure behaviour of autocomplete_fields** in Django (2,3).
 Probably you cannot modify the native Django ajax url (../autocomplete/) and you can only access the Referer url during get_search_results.
 
 Lets say, **you have inside single model 2 <select>s with same target model of ForeignKey** (example: User, in two different roles).
