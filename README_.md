@@ -2,6 +2,10 @@
 Django admin: Use select2 (autocomplete_fields) everywhere. Implicit is better than explicit. Because it is brief and easy.
 In addition gives improved context in get_search_results so you can apply filters based on current <select> and form values.
 
+## Important note
+
+Please read in README.rst about solutions with this package and with django-autocomplete-light.
+
 ## Install
 
 Install the last stable release
