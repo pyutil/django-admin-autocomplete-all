@@ -76,6 +76,17 @@ function expand_ajax_params($, key) {
 function expand_ajax_params($, fieldId) {
     function sanitize(string) {  // https://stackoverflow.com/questions/2794137/sanitizing-user-input-before-adding-it-to-the-dom-in-javascript
         if (string === null) {return '';}
+
+        // https://stackoverflow.com/questions/4310535/how-to-convert-anything-to-a-string-safely-in-javascript
+        switch (typeof string) {
+            case 'object':
+                return 'object';
+            case 'function':
+                return 'function';
+            default:
+                return string + '';  // to string (dj 3.2 was reported an issue with non-string content here, which fails on string.replace)
+        }
+
         const map = {
             '&': '&amp;',
             '<': '&lt;',
