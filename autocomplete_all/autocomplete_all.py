@@ -9,6 +9,12 @@ if not settings.configured:
     settings.configure()   # required for docs: make html
 
 
+def is_ajax(request):
+    if hasattr(request, 'is_ajax'):
+        return request.is_ajax
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
 # this mixin was added in 0.3 because it could fix problems with missing autocomplete widget in some scenario(s)
 class AutocompleteAllMixin:
     # here we use files distributed inside django 2+
@@ -65,7 +71,7 @@ class ModelAdmin(admin.ModelAdmin, AutocompleteAllMixin):
 
     def get_search_results(self, request, queryset, search_term):
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
-        if request.is_ajax and '/autocomplete/' in request.path:
+        if is_ajax(request) and '/autocomplete/' in request.path:
             strip_begin = reverse('admin:index')
             url = urllib.parse.urlparse(request.headers['Referer'])
             referer = url.path                    # example: /admin/friends/friend/add, /admin/friends/friend/36/change
