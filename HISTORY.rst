@@ -3,6 +3,10 @@
 History
 -------
 
+0.6.6 (2022-02-16)
+++++++++++++++++++
+Solved HttpRequest.is_ajax() deprecation (Dj 3.1) - thx Darío Fragas for help and contribution
+
 0.6.3 (2021-03-10)
 ++++++++++++++++++
 INCOMPATIBLE: MediaMixin renamed to AutocompleteAllMixin (please rename if you have this class in your code)
